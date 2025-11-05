@@ -3,27 +3,62 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Recipe Finder</title>
+  <title>Recipe Finder | Discover Delicious Meals</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1046/1046857.png" />
 </head>
 <body>
+  <!-- Header / Hero -->
   <header>
-    <h1>🍽️ Recipe Finder</h1>
-    <p>Search for recipes using your favorite ingredients!</p>
+    <h1>🍳 Recipe Finder</h1>
+    <p>Discover recipes by ingredient, cuisine, or craving — right at your fingertips!</p>
   </header>
 
+  <!-- Search Section -->
   <main>
     <section id="search-section">
-      <input type="text" id="search-input" placeholder="Enter ingredient or dish name..." />
-      <button id="search-btn">Search</button>
+      <div class="search-box">
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Search for a recipe or ingredient..."
+          aria-label="Search recipes"
+        />
+        <button id="search-btn">🔍 Search</button>
+      </div>
     </section>
 
-    <section id="recipes-section"></section>
+    <!-- Results Section -->
+    <section id="recipes-section" aria-live="polite">
+      <!-- Recipe cards dynamically injected by JS -->
+    </section>
   </main>
 
+  <!-- Footer -->
   <footer>
-    <p>Made by Abhay 💻 | Using TheMealDB API</p>
+    <p>
+      Made by <strong>Abhay Singh Rawat</strong> |
+      Powered by <a href="https://www.themealdb.com/api.php" target="_blank">TheMealDB API</a>
+    </p>
   </footer>
+
+  <!-- Optional: Simple loader for UX -->
+  <div id="loader" style="
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255,255,255,0.85);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    font-weight: 600;
+    color: #ff5f6d;
+    text-align: center;
+  ">
+    🍴 Fetching recipes...
+  </div>
 
   <script src="script.js"></script>
 </body>
