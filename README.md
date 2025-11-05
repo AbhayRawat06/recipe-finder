@@ -53,7 +53,7 @@ It allows users to explore, search, and filter recipes from around the world usi
 
 ## 🚀 Live Demo
 
-👉 **Try DishDive Live:** [https://recipe-finder06.netlify.app/](#)
+👉 **Try DishDive Live:** [https://d1shd1ve.netlify.app/]
 
 ---
 
