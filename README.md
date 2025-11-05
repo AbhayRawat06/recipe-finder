@@ -1,4 +1,4 @@
-# Recipe Finder 🍽️
+# DishDive 🍽️
 
 A simple and responsive Recipe Finder web application built using **HTML**, **CSS**, and 
 **Vanilla JavaScript**, which allows users to search for recipes using the [TheMealDB API]
