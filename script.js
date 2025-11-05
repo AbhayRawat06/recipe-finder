@@ -1,5 +1,5 @@
 // ===============================
-// Recipe Finder 2.0 — Enhanced JS
+// Recipe Finder 2.1 — Fixed + Enhanced
 // ===============================
 
 // DOM Elements
@@ -8,13 +8,16 @@ const searchInput = document.getElementById('search-input');
 const recipesSection = document.getElementById('recipes-section');
 const loader = document.getElementById('loader'); // optional loading overlay
 
-// Handle search button click or "Enter" press
+// Handle click or Enter key
 searchBtn.addEventListener('click', handleSearch);
-searchInput.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') handleSearch();
+searchInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    handleSearch();
+  }
 });
 
-// Core search handler
+// Main search logic
 async function handleSearch() {
   const query = searchInput.value.trim();
   if (!query) {
@@ -23,53 +26,66 @@ async function handleSearch() {
     return;
   }
 
-  // Show loader or message
   showLoader(true);
   recipesSection.innerHTML = '';
 
   try {
-    // Primary API — TheMealDB Search
-    const data = await fetchRecipesFromTheMealDB(query);
+    // Try fetching from TheMealDB (main API)
+    const data = await fetchFromMealDB(query);
 
     if (data && data.meals) {
       displayRecipes(data.meals);
     } else {
-      // Fallback: fetch Indian dishes if no results found
-      const indianData = await fetchIndianRecipes();
-      if (indianData && indianData.meals) {
+      // Fallback: fetch Indian dishes
+      const indianMeals = await fetchIndianMeals();
+      if (indianMeals && indianMeals.length > 0) {
         recipesSection.innerHTML = `
           <p>No exact matches found for "<strong>${query}</strong>", but here are some delicious Indian dishes 🍛</p>
         `;
-        displayRecipes(indianData.meals);
+        displayRecipes(indianMeals);
       } else {
         recipesSection.innerHTML = `<p>No recipes found for "<strong>${query}</strong>". Try another search!</p>`;
       }
     }
   } catch (error) {
     recipesSection.innerHTML = `<p>⚠️ Error fetching recipes. Please try again later.</p>`;
-    console.error('Fetch Error:', error);
+    console.error('Error:', error);
   } finally {
     showLoader(false);
   }
 }
 
-// Fetch from TheMealDB
-async function fetchRecipesFromTheMealDB(query) {
+// Fetch recipes by query
+async function fetchFromMealDB(query) {
   const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`;
   const res = await fetch(url);
   return await res.json();
 }
 
-// Fetch fallback Indian recipes
-async function fetchIndianRecipes() {
-  const url = `https://www.themealdb.com/api/json/v1/1/filter.php?a=Indian`;
-  const res = await fetch(url);
-  return await res.json();
+// Fetch full Indian recipes (detailed)
+async function fetchIndianMeals() {
+  const baseUrl = `https://www.themealdb.com/api/json/v1/1/filter.php?a=Indian`;
+  const res = await fetch(baseUrl);
+  const data = await res.json();
+
+  if (!data.meals) return [];
+
+  // Fetch full details for each Indian meal
+  const detailedMeals = await Promise.all(
+    data.meals.slice(0, 12).map(async (meal) => {
+      const detailUrl = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${meal.idMeal}`;
+      const res = await fetch(detailUrl);
+      const detailData = await res.json();
+      return detailData.meals ? detailData.meals[0] : null;
+    })
+  );
+
+  return detailedMeals.filter(Boolean);
 }
 
 // Display recipes dynamically
 function displayRecipes(meals) {
-  const html = meals
+  recipesSection.innerHTML += meals
     .map(
       (meal) => `
       <div class="recipe-card">
@@ -84,11 +100,9 @@ function displayRecipes(meals) {
     `
     )
     .join('');
-
-  recipesSection.innerHTML += html;
 }
 
-// Simple loader toggle (optional)
+// Loader toggle
 function showLoader(show) {
   if (loader) loader.style.display = show ? 'block' : 'none';
 }
