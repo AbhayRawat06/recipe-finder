@@ -1,64 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Recipe Finder | Discover Delicious Meals</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DishDive — Explore Dishes from Around the World</title>
   <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1046/1046857.png" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Header / Hero -->
-  <header>
-    <h1>🍳 Recipe Finder</h1>
-    <p>Discover recipes by ingredient, cuisine, or craving — right at your fingertips!</p>
+  <!-- Top Nav -->
+  <header class="nav">
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="logo">🍽</div>
+        <div class="brand-text">
+          <span class="brand-title">DishDive</span>
+          <span class="brand-sub">Explore global recipes</span>
+        </div>
+      </div>
+
+      <div class="controls">
+        <label class="control">
+          <select id="cuisine-select" aria-label="Filter by cuisine">
+            <option value="All">All Cuisines</option>
+            <option value="Indian">Indian</option>
+            <option value="Italian">Italian</option>
+            <option value="Mexican">Mexican</option>
+            <option value="Chinese">Chinese</option>
+            <option value="American">American</option>
+            <option value="Thai">Thai</option>
+          </select>
+        </label>
+
+        <label class="control">
+          <select id="sort-select" aria-label="Sort recipes">
+            <option value="relevance">Sort: Relevance</option>
+            <option value="az">Sort: A → Z</option>
+            <option value="za">Sort: Z → A</option>
+          </select>
+        </label>
+
+        <button id="theme-toggle" class="theme-btn" title="Toggle theme">🌙</button>
+      </div>
+    </div>
   </header>
 
-  <!-- Search Section -->
+  <!-- Hero + Search -->
   <main>
-    <section id="search-section">
-      <div class="search-box">
-        <input
-          type="text"
-          id="search-input"
-          placeholder="Search for a recipe or ingredient..."
-          aria-label="Search recipes"
-        />
-        <button id="search-btn">🔍 Search</button>
+    <section class="hero">
+      <div class="hero-inner">
+        <h1>Find recipes. Cook confidently.</h1>
+        <p class="tagline">Search by ingredient or dish, filter by cuisine, and sort results — all smoothly.</p>
+
+        <div id="search-section" class="search-area">
+          <div class="search-box">
+            <input
+              type="text"
+              id="search-input"
+              placeholder="Try: biryani, pasta, pancake, paneer..."
+              aria-label="Search recipes"
+            />
+            <button id="search-btn" aria-label="Search">Search</button>
+          </div>
+          <div class="helper">
+            <small>Tip: Leave search empty and choose a cuisine to browse that cuisine.</small>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- Results Section -->
-    <section id="recipes-section" aria-live="polite">
-      <!-- Recipe cards dynamically injected by JS -->
+    <!-- Recipes grid -->
+    <section id="recipes-section" class="grid" aria-live="polite">
+      <!-- cards injected here -->
     </section>
   </main>
 
-  <!-- Footer -->
-  <footer>
-    <p>
-      Made by <strong>Abhay Singh Rawat</strong> |
-      Powered by <a href="https://www.themealdb.com/api.php" target="_blank">TheMealDB API</a>
-    </p>
-  </footer>
+  <!-- Loader -->
+  <div id="loader" class="loader" aria-hidden="true">🍴 Loading recipes...</div>
 
-  <!-- Optional: Simple loader for UX -->
-  <div id="loader" style="
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(255,255,255,0.85);
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.1);
-    font-weight: 600;
-    color: #ff5f6d;
-    text-align: center;
-  ">
-    🍴 Fetching recipes...
-  </div>
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div>
+      <strong>DishDive</strong> — made by Abhay Singh Rawat. Powered by TheMealDB.
+    </div>
+  </footer>
 
   <script src="script.js"></script>
 </body>
